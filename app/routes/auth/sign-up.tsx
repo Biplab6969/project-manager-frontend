@@ -8,9 +8,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
+import { useSignUpmutation } from '@/hooks/use-auth';
+import { toast } from 'sonner';
 
 
-type SignupFormData = z.infer<typeof signUpSchema>;
+export type SignupFormData = z.infer<typeof signUpSchema>;
 const SignUp = () => {
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signUpSchema),
@@ -22,8 +24,21 @@ const SignUp = () => {
     }
   });
 
+
+  const { mutate, isPending } = useSignUpmutation();
+
   const handleOnSubmit = (values: SignupFormData) => {
-    console.log(values);
+    mutate(values, {
+      onSuccess: () => {
+        toast.success("Account created successfully. Please sign in.");
+      },
+      onError: (error: any) => {
+        const errorMessage = error?.response?.data?.message || "Something went wrong. Please try again.";
+        console.log(error);
+        
+        toast.error(errorMessage);
+      },
+    });
   };
   return (
     <div className='min-h-screen flex flex-col items-center justify-center bg-muted/40 p-4'>
@@ -57,14 +72,14 @@ const SignUp = () => {
 
               <FormField
                 control={form.control}
-                name='email'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
                       <Input
-                        type='Lucky'
-                        placeholder='email@example.com'
+                        type='text'
+                        placeholder='Lucky'
                         {...field}
                       />
                     </FormControl>
@@ -92,7 +107,7 @@ const SignUp = () => {
 
               <FormField
                 control={form.control}
-                name='password'
+                name='confirmPassword'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel> Confirm Password</FormLabel>
@@ -107,7 +122,9 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' className='w-full'>Sign Up</Button>
+              <Button type='submit' className='w-full' disabled={isPending}>
+                {isPending ? "Signing up..." : "Sign Up"}
+              </Button>
             </form>
           </Form>
           <CardFooter className='flex items-center justify-center mt-6'>
