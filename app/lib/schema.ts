@@ -13,4 +13,23 @@ export const signUpSchema = z.object({
 }).refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "Passwords do not match",
+});
+
+export const resetPasswordSchema = z.object({
+    newPassword: z.string().min(8, "New Password must be 8 characters"),
+    confirmNewPassword: z.string().min(8, "Confirm New Password must be 8 characters"),
 })
+.refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
+    message: "Passwords do not match",
+});
+
+export const forgotPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
+
+export const workspaceSchema = z.object({
+    name: z.string().min(3, "Workspace name must be at least 3 characters"),
+    color: z.string().min(3, "Color must be at least 3 characters"),
+    description: z.string().optional(),
+});
