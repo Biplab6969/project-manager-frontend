@@ -13,15 +13,13 @@ interface HeaderProps {
     selectedWorkspace: Workspace | null;
     onCreateWorkspace: () => void;
 }
- export const Header = ({
+export const Header = ({
     onWorkspaceSelected,
     selectedWorkspace,
     onCreateWorkspace,
- }: HeaderProps) => {
-    const {user, logout} = useAuth();
-    const {workspaces} = useLoaderData() as {workspaces: Workspace[]};
-    console.log(workspaces);
-    
+}: HeaderProps) => {
+    const { user, logout } = useAuth();
+    const { workspaces } = useLoaderData() as { workspaces: Workspace[] };
     return (
         <div className='bg-background sticky top-0 z-40 border-b'>
             <div className='flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 py-4'>
@@ -30,13 +28,13 @@ interface HeaderProps {
                         <Button variant={"outline"}>
                             {selectedWorkspace ? (
                                 <>
-                                {selectedWorkspace.color && (
-                                    <WorkspaceAvator
-                                    color={selectedWorkspace.color}
-                                    name={selectedWorkspace.name}
-                                    />
-                                )}
-                                <span className='font-medium'>{selectedWorkspace?.name}</span>
+                                    {selectedWorkspace.color && (
+                                        <WorkspaceAvator
+                                            color={selectedWorkspace.color}
+                                            name={selectedWorkspace.name}
+                                        />
+                                    )}
+                                    <span className='font-medium'>{selectedWorkspace?.name}</span>
                                 </>
                             ) : (
                                 <span className='font-medium'>Select Workspace</span>
@@ -51,8 +49,8 @@ interface HeaderProps {
                         <DropdownMenuGroup>
                             {workspaces.map((ws) => (
                                 <DropdownMenuItem
-                                key={ws._id}
-                                onClick={() => onWorkspaceSelected(ws)}
+                                    key={ws._id}
+                                    onClick={() => onWorkspaceSelected(ws)}
                                 >
                                     {ws.color && (
                                         <WorkspaceAvator color={ws.color} name={ws.name} />
@@ -99,4 +97,4 @@ interface HeaderProps {
             </div>
         </div>
     )
- };
+};
