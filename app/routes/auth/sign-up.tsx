@@ -39,7 +39,7 @@ const SignUp = () => {
         navigate('/sign-in');
       },
       onError: (error: any) => {
-        const errorMessage = error?.response?.data?.message || "Something went wrong. Please try again.";
+        const errorMessage = error?.response?.data?.message || error.message || "Something went wrong. Please try again.";
         console.log(error);
         
         toast.error(errorMessage);

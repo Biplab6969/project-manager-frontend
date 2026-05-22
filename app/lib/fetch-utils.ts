@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { string, unknown } from 'zod';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api-v1';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://project-manager-backend-k3y0.onrender.com/api-v1';
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -22,7 +22,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            window.dispatchEvent(new Event('logout'));
+            window.dispatchEvent(new Event('force-logout'));
         }
         return Promise.reject(error);
     }

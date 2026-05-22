@@ -39,9 +39,9 @@ const SignIn = () => {
             },
             onError: (error: any) => {
                 const errorMessage =
-                    error.response?.data?.message || "An error occured";
+                    error.response?.data?.message || error.message || "Something went wrong. Please try again.";
                 console.log(error);
-                toast(errorMessage);
+                toast.error(errorMessage);
             }
         });
     };
